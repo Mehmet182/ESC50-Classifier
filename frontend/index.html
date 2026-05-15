@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ESC-50 Ses Sınıflandırıcı - YAMNet tabanlı çevresel ses tanıma sistemi">
+    <title>ESC-50 Ses Sınıflandırıcı</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/record.css">
+</head>
+<body>
+    <!-- Animated background particles -->
+    <div class="bg-particles" id="bgParticles"></div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                        <circle cx="16" cy="16" r="14" stroke="url(#logoGrad)" stroke-width="2.5"/>
+                        <path d="M10 16C10 16 12 10 16 10C20 10 22 16 22 16C22 16 20 22 16 22C12 22 10 16 10 16Z" fill="url(#logoGrad)" opacity="0.3"/>
+                        <circle cx="16" cy="16" r="3" fill="url(#logoGrad)"/>
+                        <!-- Sound wave arcs -->
+                        <path d="M22 12C23.5 13.5 24.5 15.5 24.5 16C24.5 16.5 23.5 18.5 22 20" stroke="url(#logoGrad)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                        <path d="M24 10C26 12 27.5 14.5 27.5 16C27.5 17.5 26 20 24 22" stroke="url(#logoGrad)" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.6"/>
+                        <defs>
+                            <linearGradient id="logoGrad" x1="0" y1="0" x2="32" y2="32">
+                                <stop offset="0%" stop-color="#6366f1"/>
+                                <stop offset="100%" stop-color="#a855f7"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="app-title">ESC-50 Classifier</h1>
+                    <p class="app-subtitle">YAMNet Tabanlı Çevresel Ses Tanıma</p>
+                </div>
+            </div>
+            <div class="header-badge">
+                <span class="badge-dot"></span>
+                <span>50 Kategori</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Upload Section -->
+            <section class="upload-section" id="uploadSection">
+                <div class="upload-zone" id="uploadZone">
+                    <div class="upload-icon" id="uploadIcon">
+                        <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+                            <rect x="4" y="4" width="48" height="48" rx="12" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4" opacity="0.3"/>
+                            <path d="M28 18V38M18 28H38" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                            <path d="M20 22L28 14L36 22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h2 class="upload-title">Ses Dosyası Yükle</h2>
+                    <p class="upload-description">Dosyayı buraya sürükle veya tıklayarak seç</p>
+                    <p class="upload-formats">.wav, .mp3, .ogg, .flac desteklenir</p>
+                    <input type="file" id="fileInput" accept="audio/*" hidden>
+                </div>
+                
+                <div class="record-divider">
+                    <span>veya</span>
+                </div>
+                
+                <div class="record-zone" id="recordZone">
+                    <button class="btn-record" id="btnRecord">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" id="micIcon">
+                            <path d="M12 2C10.3431 2 9 3.34315 9 5V11C9 12.6569 10.3431 14 12 14C13.6569 14 15 12.6569 15 11V5C15 3.34315 13.6569 2 12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M19 10V11C19 14.866 15.866 18 12 18C8.13401 18 5 14.866 5 11V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 18V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8 22H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span id="recordText">Mikrofondan Kaydet</span>
+                    </button>
+                    <div class="recording-indicator hidden" id="recordingIndicator">
+                        <span class="recording-dot"></span>
+                        <span id="recordingTime">00:00</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- File Info Section (hidden initially) -->
+            <section class="file-info-section hidden" id="fileInfoSection">
+                <div class="file-info-card">
+                    <div class="file-info-left">
+                        <div class="file-icon-wrapper">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M9 18V5l12-2v13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="2"/>
+                                <circle cx="18" cy="16" r="3" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="file-name" id="fileName">dosya.wav</p>
+                            <p class="file-meta" id="fileMeta">0 KB</p>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="btn-audio-play" id="btnPlay" title="Dinle">
+                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" id="playIcon">
+                                <polygon points="4,2 16,9 4,16" fill="currentColor"/>
+                            </svg>
+                        </button>
+                        <button class="btn-remove" id="btnRemove" title="Kaldır">
+                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                <path d="M4 4L14 14M14 4L4 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <!-- Waveform canvas -->
+                <canvas id="waveformCanvas" class="waveform-canvas"></canvas>
+                <audio id="audioPlayer" hidden></audio>
+                <!-- Analyze Button -->
+                <button class="btn-analyze" id="btnAnalyze">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" class="btn-analyze-icon">
+                        <circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="2"/>
+                        <path d="M14 14L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <span>Analiz Et</span>
+                </button>
+            </section>
+
+            <!-- Loading Section -->
+            <section class="loading-section hidden" id="loadingSection">
+                <div class="loading-animation">
+                    <div class="sound-bars">
+                        <span></span><span></span><span></span><span></span><span></span>
+                        <span></span><span></span><span></span><span></span>
+                    </div>
+                    <p class="loading-text">Model sesi analiz ediyor<span class="loading-dots"></span></p>
+                </div>
+            </section>
+
+            <!-- Results Section (hidden initially) -->
+            <section class="results-section hidden" id="resultsSection">
+                <!-- Primary Result Card -->
+                <div class="result-primary" id="resultPrimary">
+                    <div class="result-emoji" id="resultEmoji">🔊</div>
+                    <div class="result-label" id="resultLabel">--</div>
+                    <div class="result-confidence-ring">
+                        <svg viewBox="0 0 120 120" class="confidence-ring-svg">
+                            <circle cx="60" cy="60" r="52" class="ring-bg"/>
+                            <circle cx="60" cy="60" r="52" class="ring-fill" id="ringFill"
+                                    stroke-dasharray="326.73" stroke-dashoffset="326.73"/>
+                        </svg>
+                        <div class="confidence-value" id="confidenceValue">0%</div>
+                    </div>
+                </div>
+
+                <!-- Top 5 Chart -->
+                <div class="top5-section">
+                    <h3 class="section-title">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                            <rect x="1" y="10" width="3" height="7" rx="1" fill="currentColor" opacity="0.4"/>
+                            <rect x="5.5" y="6" width="3" height="11" rx="1" fill="currentColor" opacity="0.6"/>
+                            <rect x="10" y="3" width="3" height="14" rx="1" fill="currentColor" opacity="0.8"/>
+                            <rect x="14.5" y="1" width="3" height="16" rx="1" fill="currentColor"/>
+                        </svg>
+                        En Yüksek 5 Tahmin
+                    </h3>
+                    <div class="top5-bars" id="top5Bars">
+                        <!-- JS ile doldurulacak -->
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="result-actions" style="display: flex; gap: 12px; margin-top: 8px;">
+                    <button class="btn-new-analysis" id="btnReplayResult" style="flex: 1; background: rgba(139, 92, 246, 0.1); border-color: var(--primary); color: var(--primary);">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" id="replayIcon">
+                            <polygon points="4,2 16,9 4,16" fill="currentColor"/>
+                        </svg>
+                        <span>Dinle</span>
+                    </button>
+                    <button class="btn-new-analysis" id="btnNewAnalysis" style="flex: 1;">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                            <path d="M3 9C3 5.686 5.686 3 9 3C12.314 3 15 5.686 15 9C15 12.314 12.314 15 9 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M1 9L3 11L5 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Yeni Analiz</span>
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>YAMNet + Custom CNN-LSTM Hybrid Model &bull; ESC-50 Dataset</p>
+        </footer>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

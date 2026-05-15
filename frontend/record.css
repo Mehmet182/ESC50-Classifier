@@ -1,0 +1,84 @@
+/* Record styles */
+.record-divider {
+    text-align: center;
+    position: relative;
+    margin: 24px 0;
+}
+
+.record-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--border);
+    z-index: 0;
+}
+
+.record-divider span {
+    background: rgba(30, 41, 59, 1);
+    padding: 0 16px;
+    font-size: 13px;
+    color: var(--text-muted);
+    position: relative;
+    z-index: 1;
+}
+
+.btn-record {
+    width: 100%;
+    padding: 16px;
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: var(--radius-md);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    transition: var(--transition-fast);
+}
+
+.btn-record:hover {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: rgba(239, 68, 68, 0.5);
+}
+
+.btn-record.recording {
+    background: #ef4444;
+    color: white;
+    animation: pulse-record 1.5s infinite;
+}
+
+@keyframes pulse-record {
+    0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+.recording-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    font-size: 14px;
+    color: #ef4444;
+    font-weight: 600;
+}
+
+.recording-dot {
+    width: 8px;
+    height: 8px;
+    background: #ef4444;
+    border-radius: 50%;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
